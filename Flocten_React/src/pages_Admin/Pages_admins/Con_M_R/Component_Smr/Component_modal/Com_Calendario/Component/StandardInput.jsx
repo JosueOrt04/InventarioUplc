@@ -1,0 +1,33 @@
+/**
+ * Componente para inputs estándar (text, number, etc.)
+ */
+const StandardInput = ({
+  type,
+  name,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  required,
+  placeholder,
+}) => {
+  return (
+    <input
+      type={type}
+      name={name}
+      value={value ?? ""}
+      onChange={onChange}
+      min={min}
+      max={max}
+      step={step}
+      required={required}
+      placeholder={placeholder}
+      className="w-full border-2 border-base-300 bg-base-100 rounded-lg px-4 py-3
+                 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20
+                 transition-all duration-200 hover:border-base-400 shadow-sm"
+    />
+  );
+};
+
+export default StandardInput;

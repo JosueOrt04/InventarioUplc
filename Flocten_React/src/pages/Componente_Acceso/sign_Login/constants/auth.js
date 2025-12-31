@@ -1,0 +1,7 @@
+export const CONTROL_NUMBER = {
+  REQUIRED_PREFIX: '511622030',
+  MIN_LENGTH: 10,
+  MAX_LENGTH: 12,
+};
+
+export const PASSWORD_MIN_LENGTH = 6;

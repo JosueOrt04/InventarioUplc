@@ -1,0 +1,10 @@
+{
+    "start_time": "2025-11-30T09:53:44-06:00",
+    "cloudflare_url": "[0;34m[09:53:20][0m Intento 1/20 - Esperando URL...
+[0;34m[09:53:23][0m Intento 2/20 - Esperando URL...
+https://cardiac-whom-rehab-observation.trycloudflare.com",
+    "backend_port": "5001",
+    "frontend_port": "5173",
+    "restart_count": "0",
+    "environment": ""
+}

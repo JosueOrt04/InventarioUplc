@@ -1,0 +1,344 @@
+#!/bin/bash
+
+# Configuración
+BACKEND_DIR="$HOME/Documentos/laboratorio/Backen_React"
+FRONTEND_PORT="5173"
+BACKEND_PORT="5001"
+WHATSAPP_SCRIPT="$BACKEND_DIR/src/enviar_whatsapp.cjs"
+# Colores
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+log() {
+    echo -e "${BLUE}[$(date +'%H:%M:%S')]${NC} $1"
+}
+
+error() {
+    echo -e "${RED}❌ $1${NC}"
+}
+
+success() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+warning() {
+    echo -e "${YELLOW}⚠️ $1${NC}"
+}
+
+# Verificar dependencias
+check_dependencies() {
+    if ! command -v cloudflared &> /dev/null; then
+        error "cloudflared no está instalado"
+        log "Instala con: sudo apt install cloudflared"
+        exit 1
+    fi
+    
+    if ! command -v node &> /dev/null; then
+        error "Node.js no está instalado"
+        exit 1
+    fi
+}
+
+# Extraer URL de cloudflared
+extract_cloudflare_url() {
+    local log_file="$1"
+    local max_attempts=30
+    local attempt=1
+    
+    while [ $attempt -le $max_attempts ]; do
+        if [ -f "$log_file" ]; then
+            local url=$(grep -o 'https://[^ ]*\.trycloudflare\.com' "$log_file" | head -1)
+            if [ -n "$url" ]; then
+                echo "$url"
+                return 0
+            fi
+        fi
+        sleep 2
+        attempt=$((attempt + 1))
+    done
+    return 1
+}
+
+# Actualizar configuración de CORS en server.js
+update_server_cors() {
+    local url="$1"
+    local server_file="$BACKEND_DIR/src/Server.js"
+    
+    if [ -f "$server_file" ]; then
+        # Crear backup
+        cp "$server_file" "$server_file.backup"
+        
+        log "Actualizando server.js con URL: $url"
+        
+        # Método 1: Actualizar el array allowedOrigins completo
+        sed -i "s|allowedOrigins = \\[.*\\]|allowedOrigins = [\"$url\"]|g" "$server_file"
+        
+        # Método 2: Reemplazar cualquier URL de cloudflare existente
+        sed -i "s|https://[a-zA-Z0-9.-]*\\.trycloudflare\\.com|$url|g" "$server_file"
+        
+        # Método 3: Actualizar específicamente en la configuración de CORS
+        sed -i "s|allowedOrigins = \\[\"[^\"]*\"\\]|allowedOrigins = [\"$url\"]|g" "$server_file"
+        
+        # Verificar el cambio
+        if grep -q "$url" "$server_file"; then
+            success "Configuración de CORS en server.js actualizada con: $url"
+            
+            # Eliminar el archivo de backup ya que la actualización fue exitosa
+            rm -f "$server_file.backup"
+            log "Archivo de backup eliminado: $server_file.backup"
+        else
+            warning "No se pudo actualizar server.js, revisando estructura..."
+            # Mostrar la línea actual para debugging
+            log "Línea actual en server.js:"
+            grep -n "allowedOrigins" "$server_file" || log "No se encontró 'allowedOrigins'"
+            
+            # Mantener el backup para recuperación en caso de error
+            warning "Se mantiene el backup en: $server_file.backup"
+        fi
+    else
+        warning "No se encontró server.js en: $server_file"
+    fi
+}
+
+# Actualizar configuración de Socket.IO
+update_socket_config() {
+    local url="$1"
+    local socket_file="$BACKEND_DIR/src/lib/socket.js"
+    
+    if [ -f "$socket_file" ]; then
+        # Crear backup
+        cp "$socket_file" "$socket_file.backup"
+        
+        log "Actualizando socket.js con URL: $url"
+        
+        # Método 1: Actualizar el array allowedOrigins
+        sed -i "s|allowedOrigins = \\[.*\\]|allowedOrigins = [\"$url\"]|g" "$socket_file"
+        
+        # Método 2: Reemplazar cualquier URL de cloudflare existente
+        sed -i "s|https://[a-zA-Z0-9.-]*\\.trycloudflare\\.com|$url|g" "$socket_file"
+        
+        # Método 3: Actualizar directamente en la configuración de CORS
+        sed -i "s|origin: \\[.*\\],|origin: [\"$url\"],|g" "$socket_file"
+        
+        # Verificar el cambio
+        if grep -q "$url" "$socket_file"; then
+            success "Configuración de Socket.IO actualizada con: $url"
+            
+            # Eliminar el archivo de backup ya que la actualización fue exitosa
+            rm -f "$socket_file.backup"
+            log "Archivo de backup eliminado: $socket_file.backup"
+        else
+            warning "No se pudo actualizar socket.js, revisando estructura..."
+            # Mostrar la línea actual para debugging
+            log "Línea actual en socket.js:"
+            grep -n "allowedOrigins\\|origin:" "$socket_file" || log "No se encontró 'allowedOrigins' u 'origin:'"
+            
+            # Mantener el backup para recuperación en caso de error
+            warning "Se mantiene el backup en: $socket_file.backup"
+        fi
+    else
+        warning "No se encontró lib/socket.js en: $socket_file"
+    fi
+}
+
+# Reiniciar el servidor para aplicar cambios
+restart_server() {
+    log "Reiniciando servidor para aplicar cambios..."
+    
+    # Buscar y matar proceso del backend
+    local backend_pid=$(lsof -ti :$BACKEND_PORT)
+    if [ -n "$backend_pid" ]; then
+        log "Deteniendo proceso del backend (PID: $backend_pid)"
+        kill $backend_pid
+        sleep 5
+    fi
+    
+    # También matar cualquier proceso de node relacionado
+    pkill -f "node --watch ./src/Server.js" 2>/dev/null
+    
+    # Esperar a que el puerto se libere
+    while lsof -Pi :$BACKEND_PORT -sTCP:LISTEN -t >/dev/null; do
+        log "Esperando que el puerto $BACKEND_PORT se libere..."
+        sleep 2
+    done
+    
+    # Iniciar backend nuevamente
+    log "Iniciando backend..."
+    cd "$BACKEND_DIR"
+    npm start &
+    BACKEND_PID=$!
+    sleep 10
+    
+    # Verificar si el backend está corriendo
+    if lsof -Pi :$BACKEND_PORT -sTCP:LISTEN -t >/dev/null; then
+        success "Servidor reiniciado correctamente"
+    else
+        error "Error al reiniciar el servidor"
+        return 1
+    fi
+}
+
+# Verificar estructura actual de los archivos
+debug_files() {
+    log "=== DEBUG: Estructura actual de los archivos ==="
+       # --- server.js ---
+    local server_file="$BACKEND_DIR/src/Server.js"
+    local socket_file="$BACKEND_DIR/src/lib/socket.js"
+
+
+    
+    if [ -f "$server_file" ]; then
+        log "server.js existe"
+        log "Contenido de allowedOrigins en server.js:"
+        grep -A 2 -B 2 "allowedOrigins" "$server_file" || log "No se encontró 'allowedOrigins'"
+    else
+        warning "server.js NO existe en: $server_file"
+    fi
+    
+    if [ -f "$socket_file" ]; then
+        log "socket.js existe"
+        log "Contenido de allowedOrigins/origin en socket.js:"
+        grep -A 2 -B 2 "allowedOrigins\\|origin:" "$socket_file" || log "No se encontró 'allowedOrigins' u 'origin:'"
+    else
+        warning "socket.js NO existe en: $socket_file"
+    fi
+    log "=== FIN DEBUG ==="
+}
+
+# Función para enviar mensaje por WhatsApp
+enviar_whatsapp() {
+    local url="$1"
+    
+    if [ -f "$WHATSAPP_SCRIPT" ]; then
+        log "Enviando mensaje de WhatsApp con la nueva URL..."
+        
+        # Limpiar procesos previos
+        pkill -f "enviar_whatsapp.cjs" 2>/dev/null || true
+        sleep 2
+        
+        # Ejecutar el script
+        cd "$BACKEND_DIR"
+        
+        # Mostrar información de depuración
+        log "Ejecutando: node $WHATSAPP_SCRIPT \"$url\""
+        
+        # Capturar salida
+        local output
+        output=$(timeout 60s node "$WHATSAPP_SCRIPT" "$url" 2>&1)
+        local whatsapp_exit_code=$?
+        
+        echo "$output"
+        
+        case $whatsapp_exit_code in
+            0) success "Notificación de WhatsApp enviada correctamente" ;;
+            124) warning "Script de WhatsApp terminó por timeout (60s)" ;;
+            *) warning "Script de WhatsApp terminó con código: $whatsapp_exit_code" ;;
+        esac
+        
+    else
+        warning "Script de WhatsApp no encontrado: $WHATSAPP_SCRIPT"
+    fi
+}
+
+
+
+# Configuración principalQQQQ
+main() {
+    log "Iniciando configuración automática de Cloudflare Tunnel..."
+    
+    check_dependencies
+    
+    # Navegar al directorio del backend
+    cd "$BACKEND_DIR" || {
+        error "No se pudo acceder al directorio: $BACKEND_DIR"
+        exit 1
+    }
+
+            # Crear directorio de logs si no existe
+    LOG_DIR="./Cloudflared_Logs"
+    mkdir -p "$LOG_DIR"
+    
+    # Mostrar estructura actual para debugging
+    debug_files
+    
+    # Verificar si el backend está corriendo
+    if ! lsof -Pi :$BACKEND_PORT -sTCP:LISTEN -t >/dev/null; then
+        warning "Backend no detectado en puerto $BACKEND_PORT"
+        log "Iniciando backend..."
+        npm start &
+        BACKEND_PID=$!
+        sleep 10
+    fi
+    
+    # Iniciar cloudflared
+    log "Iniciando Cloudflare Tunnel..."
+    CLOUDFLARED_LOG="./Cloudflared_Logs/cloudflared-$(date +%s).log"
+    cloudflared tunnel --url "http://localhost:$FRONTEND_PORT" > "$CLOUDFLARED_LOG" 2>&1 &
+    CLOUDFLARED_PID=$!
+    
+    # Esperar y extraer URL
+    log "Extrayendo URL de Cloudflare..."
+    CLOUDFLARE_URL=$(extract_cloudflare_url "$CLOUDFLARED_LOG")
+    
+    if [ -n "$CLOUDFLARE_URL" ]; then
+        success "URL obtenida: $CLOUDFLARE_URL"
+        
+# ✅ NUEVO: Enviar notificación por WhatsApp
+        enviar_whatsapp "$CLOUDFLARE_URL"
+
+        # Actualizar configuraciones en ambos archivos
+        update_server_cors "$CLOUDFLARE_URL"
+        update_socket_config "$CLOUDFLARE_URL"
+        
+        # Mostrar cambios realizados
+        log "=== Verificación de cambios ==="
+        grep -n "allowedOrigins\\|origin:" src/server.js lib/socket.js 2>/dev/null
+        
+        # Reiniciar servidor para aplicar cambios
+        if restart_server; then
+            # Guardar URL en archivo
+            echo "$CLOUDFLARE_URL" > .cloudflare-url
+            echo "REACT_APP_API_URL=$CLOUDFLARE_URL" > .env.cloudflare
+            
+            success "Configuración completada!"
+            log "🌐 Frontend URL: $CLOUDFLARE_URL"
+            log "🔧 Backend URL: http://localhost:$BACKEND_PORT"
+            log "📁 URL guardada en: .cloudflare-url y .env.cloudflare"
+            
+            # Mostrar QR code si está disponible qrencode
+            if command -v qrencode &> /dev/null; then
+                log "📱 QR Code:"
+                qrencode -t ANSI "$CLOUDFLARE_URL"
+            fi
+        fi
+    else
+        error "No se pudo obtener URL de Cloudflare"
+        log "Revisa el log: $CLOUDFLARED_LOG"
+    fi
+    
+    # Manejar señales de terminación
+    trap 'cleanup' SIGINT SIGTERM
+    
+    log "Presiona Ctrl+C para detener todos los servicios"
+    
+    # Mantener el script corriendo
+    wait
+}
+
+
+
+# Actualiza la función cleanup para incluir procesos de WhatsApp
+cleanup() {
+    log "Deteniendo servicios..."
+    [ -n "$CLOUDFLARED_PID" ] && kill $CLOUDFLARED_PID 2>/dev/null
+    [ -n "$BACKEND_PID" ] && kill $BACKEND_PID 2>/dev/null
+    # También matar cualquier proceso de WhatsApp que pueda estar corriendo
+    pkill -f "enviar_whatsapp.cjs" 2>/dev/null
+    exit 0
+}
+
+# Ejecutar
+main "$@"

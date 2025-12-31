@@ -1,0 +1,817 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: all;
+}
+
+
+
+:root {
+  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Fira Code", "Cascadia Code", monospace;
+  --font-serif: "Georgia", "Times New Roman", serif;
+  --font-display: "Poppins", "Montserrat", sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+}
+
+
+@plugin "daisyui/theme" {
+  name: "cyberhack";
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Colores (manteniendo los anteriores) */
+  --color-base-100: oklch(10% 0.02 120);
+  --color-base-200: oklch(15% 0.03 120);
+  --color-base-300: oklch(20% 0.04 120);
+  --color-base-content: oklch(85% 0.3 120);
+
+  --color-primary: oklch(75% 0.35 140);
+  --color-primary-content: oklch(10% 0.05 140);
+  --color-secondary: oklch(65% 0.4 280);
+  --color-secondary-content: oklch(95% 0.01 280);
+  --color-accent: oklch(80% 0.3 60);
+  --color-accent-content: oklch(15% 0.05 60);
+  --color-neutral: oklch(25% 0.1 120);
+  --color-neutral-content: oklch(85% 0.3 120);
+  --color-info: oklch(70% 0.4 220);
+  --color-info-content: oklch(10% 0.05 220);
+  --color-success: oklch(75% 0.35 140);
+  --color-success-content: oklch(10% 0.05 140);
+  --color-warning: oklch(80% 0.4 80);
+  --color-warning-content: oklch(15% 0.05 80);
+  --color-error: oklch(70% 0.4 25);
+  --color-error-content: oklch(95% 0.01 25);
+
+  /* Tipografía Hacking */
+  --font-family: var(--font-mono);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+  --font-size-base: var(--text-sm);
+  --font-size-lg: var(--text-base);
+  --font-size-xl: var(--text-lg);
+  --letter-spacing: 0.02em;
+  --line-height: 1.6;
+
+  /* Efectos visuales hacking */
+  --radius-selector: 0.25rem;
+  --radius-field: 0.125rem;
+  --radius-box: 0.375rem;
+  --border: 1px;
+  --depth: 2;
+  --noise: 0.15;
+  --shadow: 0 0 10px oklch(75% 0.35 140 / 0.3);
+  --glow-intensity: 0.8;
+}
+
+@plugin "daisyui/theme" {
+  name: "passionate";
+  color-scheme: light;
+
+  /* Colores love */
+  --color-base-100: oklch(98% 0.01 350);
+  --color-base-200: oklch(95% 0.02 350);
+  --color-base-300: oklch(92% 0.03 350);
+  --color-base-content: oklch(25% 0.1 350);
+
+  --color-primary: oklch(65% 0.3 350);
+  --color-primary-content: oklch(98% 0.01 350);
+  --color-secondary: oklch(70% 0.25 320);
+  --color-secondary-content: oklch(98% 0.01 320);
+  --color-accent: oklch(60% 0.25 10);
+  --color-accent-content: oklch(98% 0.01 10);
+  --color-neutral: oklch(85% 0.05 350);
+  --color-neutral-content: oklch(30% 0.1 350);
+  --color-info: oklch(75% 0.2 280);
+  --color-success: oklch(70% 0.25 160);
+  --color-warning: oklch(80% 0.25 50);
+  --color-error: oklch(65% 0.3 25);
+
+  /* Tipografía romántica/elegante */
+  --font-family: var(--font-serif);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-xl);
+  --letter-spacing: 0.01em;
+  --line-height: 1.8;
+  --text-decoration-thickness: 2px;
+
+  /* Efectos suaves y elegantes */
+  --radius-selector: 1.5rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+  --shadow: 0 4px 20px oklch(0% 0 0 / 0.08);
+  --transition: all 0.3s ease;
+}
+
+@plugin "daisyui/theme" {
+  name: "midnightSand";
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Colores arena */
+  --color-base-100: oklch(20% 0.03 60);
+  --color-base-200: oklch(25% 0.04 60);
+  --color-base-300: oklch(30% 0.05 60);
+  --color-base-content: oklch(90% 0.05 60);
+
+  --color-primary: oklch(70% 0.2 50);
+  --color-primary-content: oklch(15% 0.05 50);
+  --color-secondary: oklch(65% 0.15 30);
+  --color-secondary-content: oklch(95% 0.01 30);
+  --color-accent: oklch(75% 0.25 80);
+  --color-accent-content: oklch(20% 0.05 80);
+  --color-neutral: oklch(35% 0.08 60);
+  --color-neutral-content: oklch(85% 0.05 60);
+  --color-info: oklch(70% 0.2 200);
+  --color-success: oklch(65% 0.25 140);
+  --color-warning: oklch(80% 0.3 70);
+  --color-error: oklch(65% 0.3 25);
+
+  /* Tipografía desértica/orgánica */
+  --font-family: var(--font-sans);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-xl);
+  --letter-spacing: 0.015em;
+  --line-height: 1.7;
+  --text-transform: none;
+
+  /* Efectos naturales y texturizados */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.75rem;
+  --border: 1px;
+  --depth: 2;
+  --noise: 0.1;
+  --shadow: 0 2px 15px oklch(0% 0 0 / 0.2);
+  --texture-opacity: 0.03;
+}
+
+@plugin "daisyui/theme" {
+  name: "deepOcean";
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Colores océano */
+  --color-base-100: oklch(12% 0.05 250);
+  --color-base-200: oklch(18% 0.06 250);
+  --color-base-300: oklch(24% 0.07 250);
+  --color-base-content: oklch(92% 0.02 250);
+
+  --color-primary: oklch(68% 0.25 220);
+  --color-primary-content: oklch(98% 0.01 220);
+  --color-secondary: oklch(72% 0.3 180);
+  --color-secondary-content: oklch(15% 0.05 180);
+  --color-accent: oklch(75% 0.2 320);
+  --color-accent-content: oklch(20% 0.05 320);
+  --color-neutral: oklch(30% 0.08 250);
+  --color-neutral-content: oklch(90% 0.02 250);
+  --color-info: oklch(70% 0.3 210);
+  --color-success: oklch(68% 0.28 160);
+  --color-warning: oklch(82% 0.25 80);
+  --color-error: oklch(67% 0.32 25);
+
+  /* Tipografía fluida y moderna */
+  --font-family: var(--font-sans);
+  --font-weight-normal: 300;
+  --font-weight-medium: 400;
+  --font-weight-bold: 600;
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-xl);
+  --letter-spacing: 0.02em;
+  --line-height: 1.75;
+  --word-spacing: 0.05em;
+
+  /* Efectos acuáticos y fluidos */
+  --radius-selector: 0.75rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --border: 1px;
+  --depth: 3;
+  --noise: 0.05;
+  --shadow: 0 4px 25px oklch(68% 0.25 220 / 0.15);
+  --blur-effect: blur(0.5px);
+}
+
+@plugin "daisyui/theme" {
+  name: "neonDream";
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Colores neón */
+  --color-base-100: oklch(8% 0.1 300);
+  --color-base-200: oklch(12% 0.12 300);
+  --color-base-300: oklch(16% 0.14 300);
+  --color-base-content: oklch(95% 0.05 300);
+
+  --color-primary: oklch(85% 0.4 280);
+  --color-primary-content: oklch(10% 0.05 280);
+  --color-secondary: oklch(80% 0.45 180);
+  --color-secondary-content: oklch(15% 0.05 180);
+  --color-accent: oklch(75% 0.4 350);
+  --color-accent-content: oklch(20% 0.05 350);
+  --color-neutral: oklch(25% 0.15 280);
+  --color-neutral-content: oklch(90% 0.1 280);
+  --color-info: oklch(78% 0.35 240);
+  --color-success: oklch(75% 0.4 160);
+  --color-warning: oklch(82% 0.45 70);
+  --color-error: oklch(72% 0.45 20);
+
+  /* Tipografía futurista y llamativa */
+  --font-family: var(--font-display);
+  --font-weight-normal: 500;
+  --font-weight-medium: 600;
+  --font-weight-bold: 800;
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-xl);
+  --font-size-xl: var(--text-2xl);
+  --letter-spacing: 0.03em;
+  --line-height: 1.5;
+  --text-transform: uppercase;
+
+  /* Efectos neón y brillantes */
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0.25rem;
+  --border: 2px;
+  --depth: 4;
+  --noise: 0.02;
+  --shadow: 0 0 20px oklch(85% 0.4 280 / 0.4);
+  --glow-intensity: 1;
+  --text-glow: 0 0 10px currentColor;
+}
+
+@plugin "daisyui/theme" {
+  name: "myRosi";
+  color-scheme: light;
+
+  /* Colores mejorados */
+  --color-base-100: oklch(99% 0.005 340);
+  --color-base-200: oklch(97% 0.01 340);
+  --color-base-300: oklch(95% 0.015 340);
+  --color-base-content: oklch(25% 0.08 340);
+  --color-primary: oklch(45% 0.22 340);
+  --color-primary-content: oklch(98% 0.01 340);
+  --color-secondary: oklch(60% 0.25 300);
+  --color-secondary-content: oklch(20% 0.05 300);
+  --color-accent: oklch(75% 0.18 320);
+  --color-accent-content: oklch(25% 0.05 320);
+  --color-neutral: oklch(85% 0.04 340);
+  --color-neutral-content: oklch(30% 0.06 340);
+  --color-info: oklch(70% 0.18 240);
+  --color-success: oklch(70% 0.18 160);
+  --color-warning: oklch(85% 0.15 80);
+  --color-error: oklch(65% 0.22 20);
+
+  /* Tipografía femenina y elegante */
+  --font-family: var(--font-sans);
+  --font-weight-normal: 300;
+  --font-weight-medium: 400;
+  --font-weight-bold: 600;
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-xl);
+  --letter-spacing: 0.01em;
+  --line-height: 1.7;
+
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+  --shadow: 0 2px 12px oklch(0% 0 0 / 0.05);
+}
+
+@plugin "daisyui/theme" {
+  name: "darkNova";
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Colores mejorados */
+  --color-base-100: oklch(12% 0.03 260);
+  --color-base-200: oklch(18% 0.04 260);
+  --color-base-300: oklch(24% 0.05 260);
+  --color-base-content: oklch(92% 0.02 260);
+  --color-primary: oklch(65% 0.28 280);
+  --color-primary-content: oklch(98% 0.01 280);
+  --color-secondary: oklch(70% 0.32 200);
+  --color-secondary-content: oklch(15% 0.05 200);
+  --color-accent: oklch(75% 0.25 350);
+  --color-accent-content: oklch(20% 0.05 350);
+  --color-neutral: oklch(30% 0.07 260);
+  --color-neutral-content: oklch(90% 0.02 260);
+  --color-info: oklch(72% 0.25 250);
+  --color-success: oklch(68% 0.32 140);
+  --color-warning: oklch(82% 0.28 80);
+  --color-error: oklch(68% 0.32 30);
+
+  /* Tipografía moderna y tech */
+  --font-family: var(--font-sans);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-size-base: var(--text-sm);
+  --font-size-lg: var(--text-base);
+  --font-size-xl: var(--text-lg);
+  --letter-spacing: 0.02em;
+  --line-height: 1.6;
+
+  --radius-box: 1rem;
+  --depth: 3;
+  --shadow: 0 8px 30px oklch(0% 0 0 / 0.3);
+}
+
+/* Clases de utilidad para tipografía */
+.cyberhack {
+  font-family: var(--font-mono);
+  letter-spacing: var(--letter-spacing);
+  text-shadow: var(--text-glow);
+}
+
+.passionate {
+  font-family: var(--font-serif);
+  line-height: var(--line-height);
+}
+
+.midnight-sand {
+  font-family: var(--font-sans);
+  font-weight: var(--font-weight-medium);
+}
+
+.neon-dream {
+  font-family: var(--font-display);
+  text-transform: var(--text-transform);
+  font-weight: var(--font-weight-bold);
+}
+
+@plugin "daisyui/theme" {
+
+  name: "forestMystic";
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Colores bosque encantado */
+  --color-base-100: oklch(15% 0.05 140); /* verde oscuro profundo */
+  --color-base-200: oklch(20% 0.06 140);
+  --color-base-300: oklch(25% 0.07 140);
+  --color-base-content: oklch(88% 0.08 120); /* texto verde claro mágico */
+
+  --color-primary: oklch(72% 0.25 120); /* verde bosque brillante */
+  --color-primary-content: oklch(15% 0.05 120);
+  --color-secondary: oklch(68% 0.22 80); /* dorado otoño */
+  --color-secondary-content: oklch(12% 0.04 80);
+  --color-accent: oklch(75% 0.18 280); /* púrpura mágico */
+  --color-accent-content: oklch(20% 0.05 280);
+  --color-neutral: oklch(30% 0.09 140);
+  --color-neutral-content: oklch(85% 0.07 140);
+  --color-info: oklch(70% 0.2 200);
+  --color-success: oklch(65% 0.25 140);
+  --color-warning: oklch(78% 0.28 70);
+  --color-error: oklch(65% 0.3 25);
+
+  /* Tipografía mística y orgánica */
+  --font-family: 'Georgia', 'Times New Roman', serif;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+  --font-size-base: 1.05rem;
+  --font-size-lg: 1.2rem;
+  --font-size-xl: 1.4rem;
+  --letter-spacing: 0.01em;
+  --line-height: 1.75;
+  --word-spacing: 0.03em;
+
+  /* Efectos de bosque encantado */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.875rem;
+  --border: 1.5px;
+  --depth: 2;
+  --noise: 0.08;
+  --shadow: 0 4px 20px oklch(0% 0 0 / 0.25);
+  --text-shadow: 0 2px 4px oklch(0% 0 0 / 0.3);
+  --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@plugin "daisyui/theme" {
+  name: "cyberPunki";
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Colores cyberpunk vibrantes */
+  --color-base-100: oklch(5% 0.1 280); /* púrpura casi negro */
+  --color-base-200: oklch(8% 0.12 280);
+  --color-base-300: oklch(12% 0.14 280);
+  --color-base-content: oklch(95% 0.05 280);
+
+  --color-primary: oklch(85% 0.45 350); /* rosa neón */
+  --color-primary-content: oklch(8% 0.05 350);
+  --color-secondary: oklch(82% 0.48 200); /* azul eléctrico */
+  --color-secondary-content: oklch(10% 0.05 200);
+  --color-accent: oklch(88% 0.42 80); /* amarillo alerta */
+  --color-accent-content: oklch(12% 0.05 80);
+  --color-neutral: oklch(20% 0.15 280);
+  --color-neutral-content: oklch(90% 0.1 280);
+  --color-info: oklch(80% 0.4 240);
+  --color-success: oklch(78% 0.42 160);
+  --color-warning: oklch(85% 0.45 60);
+  --color-error: oklch(75% 0.48 20);
+
+  /* Tipografía cyberpunk futurista */
+  --font-family: 'Orbitron', 'Rajdhani', 'Arial', sans-serif;
+  --font-weight-normal: 500;
+  --font-weight-medium: 600;
+  --font-weight-bold: 800;
+  --font-size-base: 0.95rem;
+  --font-size-lg: 1.15rem;
+  --font-size-xl: 1.35rem;
+  --letter-spacing: 0.04em;
+  --line-height: 1.4;
+  --text-transform: uppercase;
+
+  /* Efectos cyberpunk extremos */
+  --radius-selector: 0rem;
+  --radius-field: 0.125rem;
+  --radius-box: 0.25rem;
+  --border: 2px;
+  --depth: 4;
+  --noise: 0.2;
+  --shadow: 0 0 25px oklch(85% 0.45 350 / 0.5);
+  --glow-intensity: 1.2;
+  --text-glow: 0 0 8px currentColor;
+  --scan-line: linear-gradient(
+    to bottom,
+    transparent 50%,
+    oklch(100% 0 0 / 0.05) 51%
+  );
+}
+
+@plugin "daisyui/theme" {
+  name: "vintagePaper";
+  color-scheme: light;
+
+  /* Colores papel antiguo y sepia */
+  --color-base-100: oklch(96% 0.02 80); /* papel crema */
+  --color-base-200: oklch(93% 0.03 80);
+  --color-base-300: oklch(90% 0.04 80);
+  --color-base-content: oklch(35% 0.08 40); /* tinta sepia */
+
+  --color-primary: oklch(45% 0.15 40); /* marrón tinta */
+  --color-primary-content: oklch(95% 0.01 40);
+  --color-secondary: oklch(55% 0.12 30); /* terracota */
+  --color-secondary-content: oklch(98% 0.005 30);
+  --color-accent: oklch(50% 0.1 200); /* azul deslavado */
+  --color-accent-content: oklch(95% 0.01 200);
+  --color-neutral: oklch(85% 0.05 80);
+  --color-neutral-content: oklch(40% 0.07 40);
+  --color-info: oklch(60% 0.1 220);
+  --color-success: oklch(55% 0.12 140);
+  --color-warning: oklch(65% 0.15 70);
+  --color-error: oklch(50% 0.18 25);
+
+  /* Tipografía vintage y clásica */
+  --font-family: 'Playfair Display', 'Garamond', 'Times New Roman', serif;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-size-base: 1.1rem;
+  --font-size-lg: 1.3rem;
+  --font-size-xl: 1.6rem;
+  --letter-spacing: 0.025em;
+  --line-height: 1.8;
+  --font-style: normal;
+
+  /* Efectos vintage y texturizados */
+  --radius-selector: 0.125rem;
+  --radius-field: 0.125rem;
+  --radius-box: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0.15;
+  --shadow: 0 2px 8px oklch(0% 0 0 / 0.15);
+  --paper-texture: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
+  --text-shadow: 0 1px 2px oklch(100% 0 0 / 0.1);
+}
+
+@plugin "daisyui/theme" {
+  name: "arcticAurora";
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Colores aurora boreal */
+  --color-base-100: oklch(10% 0.05 250); /* azul noche profundo */
+  --color-base-200: oklch(15% 0.06 250);
+  --color-base-300: oklch(20% 0.07 250);
+  --color-base-content: oklch(92% 0.03 250);
+
+  --color-primary: oklch(78% 0.35 180); /* verde aurora */
+  --color-primary-content: oklch(12% 0.05 180);
+  --color-secondary: oklch(75% 0.32 280); /* púrpura aurora */
+  --color-secondary-content: oklch(15% 0.05 280);
+  --color-accent: oklch(82% 0.28 220); /* azul aurora */
+  --color-accent-content: oklch(10% 0.05 220);
+  --color-neutral: oklch(25% 0.08 250);
+  --color-neutral-content: oklch(88% 0.03 250);
+  --color-info: oklch(76% 0.3 210);
+  --color-success: oklch(72% 0.33 160);
+  --color-warning: oklch(80% 0.3 80);
+  --color-error: oklch(70% 0.35 350);
+
+  /* Tipografía glacial y moderna */
+  --font-family: 'Inter', 'SF Pro Display', system-ui, sans-serif;
+  --font-weight-normal: 300;
+  --font-weight-medium: 400;
+  --font-weight-bold: 600;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --letter-spacing: 0.02em;
+  --line-height: 1.65;
+  --word-spacing: 0.02em;
+
+  /* Efectos aurora y hielo */
+  --radius-selector: 0.75rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --border: 1px;
+  --depth: 3;
+  --noise: 0.05;
+  --shadow: 0 8px 32px oklch(78% 0.35 180 / 0.2);
+  --glow-intensity: 0.6;
+  --backdrop-blur: blur(8px);
+  --gradient-overlay: linear-gradient(
+    135deg,
+    oklch(78% 0.35 180 / 0.1) 0%,
+    oklch(75% 0.32 280 / 0.1) 100%
+  );
+}
+
+@plugin "daisyui/theme" {
+  name: "alchemistLab";
+  color-scheme: dark;
+
+  /* Paleta: Ébano, Oro Vejo, Terracota, Marfil */
+  --color-base-100: oklch(8% 0.02 40);
+  --color-base-200: oklch(12% 0.03 40);
+  --color-base-300: oklch(16% 0.04 40);
+  --color-base-content: oklch(85% 0.04 70);
+
+  --color-primary: oklch(75% 0.28 80);      /* Oro alquímico */
+  --color-primary-content: oklch(8% 0.02 80);
+  --color-secondary: oklch(55% 0.22 30);    /* Terracota */
+  --color-secondary-content: oklch(95% 0.01 30);
+  --color-accent: oklch(68% 0.18 120);      /* Cobre oxidado */
+  --color-accent-content: oklch(10% 0.01 120);
+  --color-neutral: oklch(25% 0.06 50);
+  --color-neutral-content: oklch(85% 0.04 50);
+  --color-info: oklch(70% 0.2 240);
+  --color-success: oklch(72% 0.25 150);
+  --color-warning: oklch(78% 0.3 90);
+  --color-error: oklch(65% 0.3 25);
+
+  /* Tipografía editorial */
+  --font-family: var(--font-serif);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-xl);
+  --letter-spacing: 0.02em;
+  --line-height: 1.8;
+
+  /* Efectos de lujo */
+  --radius-selector: 0.125rem;      /* Minimalista */
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0.08;
+  --shadow: 0 2px 15px oklch(0% 0 0 / 0.3);
+  --texture-opacity: 0.02;          /* Textura de papel */
+}
+
+@plugin "daisyui/theme" {
+  name: "neoTokyo";
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Paleta: Negro jet, Magenta neón, Cian frío, Gris perla */
+  --color-base-100: oklch(5% 0 0);
+  --color-base-200: oklch(8% 0.01 280);
+  --color-base-300: oklch(12% 0.02 280);
+  --color-base-content: oklch(92% 0.01 280);
+
+  --color-primary: oklch(78% 0.35 330);      /* Magenta neón */
+  --color-primary-content: oklch(5% 0 0);
+  --color-secondary: oklch(82% 0.38 200);    /* Cian neón */
+  --color-secondary-content: oklch(5% 0 0);
+  --color-accent: oklch(65% 0.2 90);        /* Amarillo neón */
+  --color-accent-content: oklch(5% 0 0);
+  --color-neutral: oklch(20% 0.05 280);
+  --color-neutral-content: oklch(85% 0.02 280);
+  --color-info: oklch(70% 0.3 250);
+  --color-success: oklch(75% 0.32 160);
+  --color-warning: oklch(80% 0.35 85);
+  --color-error: oklch(70% 0.38 25);
+
+  /* Tipografía futurista japonesa */
+  --font-family: var(--font-sans);
+  --font-weight-normal: 300;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-size-base: var(--text-sm);
+  --font-size-lg: var(--text-base);
+  --font-size-xl: var(--text-lg);
+  --letter-spacing: 0.04em;               /* Espaciado tech */
+  --line-height: 1.6;
+  --text-transform: uppercase;
+
+  /* Efectos cyberpunk minimalistas */
+  --radius-selector: 0rem;                /* Rectangular */
+  --radius-field: 0.125rem;
+  --radius-box: 0.25rem;
+  --border: 1px;
+  --depth: 4;
+  --noise: 0.03;
+  --shadow: 0 0 15px oklch(78% 0.35 330 / 0.3);
+  --glow-intensity: 0.9;
+  --blur-effect: blur(1px);
+}
+@plugin "daisyui/theme" {
+  name: "zenGarden";
+  color-scheme: light;
+
+  /* Paleta: Blanco hueso, Sage, Arena, Piedra */
+  --color-base-100: oklch(98.5% 0.005 100);
+  --color-base-200: oklch(96% 0.01 100);
+  --color-base-300: oklch(93% 0.015 100);
+  --color-base-content: oklch(25% 0.05 110);
+
+  --color-primary: oklch(55% 0.08 150);     /* Sage profundo */
+  --color-primary-content: oklch(98% 0.005 150);
+  --color-secondary: oklch(72% 0.1 90);     /* Arena cálida */
+  --color-secondary-content: oklch(20% 0.05 90);
+  --color-accent: oklch(60% 0.12 70);       /* Terracota suave */
+  --color-accent-content: oklch(98% 0.005 70);
+  --color-neutral: oklch(85% 0.02 110);
+  --color-neutral-content: oklch(30% 0.06 110);
+  --color-info: oklch(70% 0.1 220);
+  --color-success: oklch(68% 0.12 140);
+  --color-warning: oklch(78% 0.15 85);
+  --color-error: oklch(62% 0.18 25);
+
+  /* Tipografía calmada y orgánica */
+  --font-family: var(--font-sans);
+  --font-weight-normal: 350;                /* Peso intermedio */
+  --font-weight-medium: 450;
+  --font-weight-bold: 600;
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-xl);
+  --letter-spacing: 0.01em;
+  --line-height: 1.9;                       /* Más espacio para respirar */
+
+  /* Efectos orgánicos */
+  --radius-selector: 9999px;                /* Totalmente redondeado */
+  --radius-field: 0.75rem;
+  --radius-box: 1.5rem;
+  --border: 1px;
+  --depth: 0;                               /* Sin elevación */
+  --noise: 0.05;
+  --shadow: 0 1px 8px oklch(0% 0 0 / 0.05);
+  --texture-opacity: 0.01;
+}
+
+@plugin "daisyui/theme" {
+  name: "lunarEclipse";
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Paleta: Gris luna, Plata, Azul hielo, Blanco fantasma */
+  --color-base-100: oklch(15% 0.01 260);
+  --color-base-200: oklch(22% 0.02 260);
+  --color-base-300: oklch(29% 0.03 260);
+  --color-base-content: oklch(95% 0.01 260);
+
+  --color-primary: oklch(85% 0.05 220);      /* Plata cian */
+  --color-primary-content: oklch(15% 0.01 220);
+  --color-secondary: oklch(75% 0.08 200);    /* Azul hielo */
+  --color-secondary-content: oklch(10% 0.01 200);
+  --color-accent: oklch(80% 0.06 260);       /* Gris perla */
+  --color-accent-content: oklch(15% 0.01 260);
+  --color-neutral: oklch(35% 0.04 260);
+  --color-neutral-content: oklch(85% 0.02 260);
+  --color-info: oklch(70% 0.12 230);
+  --color-success: oklch(72% 0.1 150);
+  --color-warning: oklch(78% 0.12 90);
+  --color-error: oklch(70% 0.15 25);
+
+  /* Tipografía técnica y líquida */
+  --font-family: var(--font-mono);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+  --font-size-base: var(--text-sm);
+  --font-size-lg: var(--text-base);
+  --font-size-xl: var(--text-lg);
+  --letter-spacing: 0.015em;
+  --line-height: 1.65;
+
+  /* Efectos de cristal */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.75rem;
+  --border: 1px;
+  --depth: 2;
+  --noise: 0.02;
+  --shadow: 0 4px 25px oklch(85% 0.05 220 / 0.1);
+  --blur-effect: blur(2px);                /* Efecto vidrio */
+}
+@plugin "daisyui/theme" {
+  name: "aurora";
+  color-scheme: dark;
+
+  /* Paleta: Verde aurora, Púrpura nocturno, Rosa neón, Azul profundo */
+  --color-base-100: oklch(8% 0.04 280);
+  --color-base-200: oklch(13% 0.06 280);
+  --color-base-300: oklch(18% 0.08 280);
+  --color-base-content: oklch(92% 0.03 280);
+
+  --color-primary: oklch(78% 0.35 160);      /* Verde aurora */
+  --color-primary-content: oklch(8% 0.02 160);
+  --color-secondary: oklch(72% 0.32 300);    /* Púrpura nocturno */
+  --color-secondary-content: oklch(95% 0.01 300);
+  --color-accent: oklch(75% 0.3 340);        /* Rosa neón */
+  --color-accent-content: oklch(15% 0.02 340);
+  --color-neutral: oklch(28% 0.1 280);
+  --color-neutral-content: oklch(85% 0.03 280);
+  --color-info: oklch(68% 0.28 240);
+  --color-success: oklch(72% 0.3 140);
+  --color-warning: oklch(80% 0.32 80);
+  --color-error: oklch(68% 0.35 25);
+
+  /* Tipografía fluida y creativa */
+  --font-family: var(--font-display);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-size-base: var(--text-base);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-2xl);
+  --letter-spacing: 0.025em;
+  --line-height: 1.7;
+  --word-spacing: 0.02em;
+
+  /* Efectos de fluidez y luz */
+  --radius-selector: 1rem;                  /* Redondeado orgánico */
+  --radius-field: 0.5rem;
+  --radius-box: 1.5rem;
+  --border: 1px;
+  --depth: 3;
+  --noise: 0.04;
+  --shadow: 0 8px 40px oklch(78% 0.35 160 / 0.2);
+  --glow-intensity: 0.7;
+  --blur-effect: blur(0.5px);
+}
+/* Utilidades para cada tema */
+.alchemist-lab {
+  font-variant-numeric: oldstyle-nums;
+  text-rendering: optimizeLegibility;
+}
+
+.neo-tokyo {
+  font-feature-settings: "ss01", "ss02";
+  image-rendering: crisp-edges;
+}
+
+.zen-garden {
+  font-optical-sizing: auto;
+  font-variation-settings: "wght" 350;
+}
+
+.lunar-eclipse {
+  font-variant-ligatures: contextual;
+  text-shadow: 0 0 2px currentColor;
+}
+
+.aurora {
+  background: linear-gradient(135deg, oklch(8% 0.04 280) 0%, oklch(13% 0.06 300) 100%);
+  background-attachment: fixed;
+}

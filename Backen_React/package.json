@@ -1,0 +1,42 @@
+{
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc.9",
+    "axios": "^1.13.2",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "init": "^0.1.2",
+    "jsonwebtoken": "^9.0.2",
+    "link-preview-js": "^3.2.0",
+    "moment-timezone": "^0.6.0",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.2",
+    "multer": "^1.4.5-lts.2",
+    "node-cron": "^4.2.1",
+    "path": "^0.12.7",
+    "qrcode-terminal": "^0.12.0",
+    "qs": "^6.14.0",
+    "socket.io": "^4.8.1",
+    "ws": "^8.18.3"
+  },
+  "name": "backen_react",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon ./src/Server.js",
+    "start": "node --watch ./src/Server.js",
+    "check-urls": "node ./src/scripts/detectUrlProblems.js",
+    "fix-urls": "node ./src/scripts/updateImageUrls.js",
+    "force-fix": "node -e \"import('./src/scripts/updateImageUrls.js').then(m => m.updateUrls())\""
+  },
+  "keywords": [],
+  "author": "Pio",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

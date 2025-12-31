@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://kansas-ability-crossword-profession.trycloudflare.com/api/$1" },
+    {
+      "source": "/socket.io/(.*)",
+      "destination": "https://kansas-ability-crossword-profession.trycloudflare.com/socket.io/$1"
+    }
+  ]
+}

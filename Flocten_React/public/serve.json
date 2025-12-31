@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "http://localhost:5001/api/$1" },
+    {
+      "source": "/socket.io/(.*)",
+      "destination": "http://localhost:5001/socket.io/$1"
+    }
+  ]
+}
